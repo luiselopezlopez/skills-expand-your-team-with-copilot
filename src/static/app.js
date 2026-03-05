@@ -568,6 +568,9 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         `
         }
+        <button class="share-button" data-activity="${name}" aria-label="Share this activity">
+          🔗 Share
+        </button>
       </div>
     `;
 
@@ -575,6 +578,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const deleteButtons = activityCard.querySelectorAll(".delete-participant");
     deleteButtons.forEach((button) => {
       button.addEventListener("click", handleUnregister);
+    });
+
+    // Add click handler for share button
+    const shareButton = activityCard.querySelector(".share-button");
+    shareButton.addEventListener("click", () => {
+      shareActivity(name);
     });
 
     // Add click handler for register button (only when authenticated)
@@ -799,6 +808,34 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
+  // Share an activity via Web Share API or clipboard fallback
+  function shareActivity(activityName) {
+    const url = new URL(window.location.href);
+    url.search = "";
+    url.searchParams.set("activity", activityName);
+    const shareUrl = url.toString();
+    const shareText = `Check out this activity at Mergington High School: ${activityName}`;
+
+    if (navigator.share) {
+      navigator
+        .share({
+          title: `${activityName} – Mergington High School`,
+          text: shareText,
+          url: shareUrl,
+        })
+        .catch(() => {});
+    } else {
+      navigator.clipboard
+        .writeText(shareUrl)
+        .then(() => {
+          showMessage("Link copied to clipboard! Share it with your friends.", "success");
+        })
+        .catch(() => {
+          showMessage("Could not copy link. Please copy the URL from your browser.", "info");
+        });
+    }
+  }
+
   // Show message function
   function showMessage(text, type) {
     messageDiv.textContent = text;
@@ -861,8 +898,30 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeRangeFilter,
   };
 
+  // Delay (ms) to allow the DOM to finish rendering activity cards
+  // before trying to scroll to a shared activity from the URL.
+  const DOM_RENDER_DELAY = 300;
+
   // Initialize app
   checkAuthentication();
   initializeFilters();
-  fetchActivities();
+  fetchActivities().then(() => {
+    // If a shared activity is in the URL, scroll to and highlight it.
+    // URLSearchParams.get() automatically decodes percent-encoded characters.
+    const params = new URLSearchParams(window.location.search);
+    const sharedActivity = params.get("activity");
+    if (sharedActivity) {
+      setTimeout(() => {
+        const cards = activitiesList.querySelectorAll(".activity-card");
+        for (const card of cards) {
+          const heading = card.querySelector("h4");
+          if (heading && heading.textContent.trim() === sharedActivity) {
+            card.classList.add("highlight-shared");
+            card.scrollIntoView({ behavior: "smooth", block: "center" });
+            break;
+          }
+        }
+      }, DOM_RENDER_DELAY);
+    }
+  });
 });
