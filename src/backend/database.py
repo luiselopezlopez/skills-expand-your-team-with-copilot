@@ -165,7 +165,7 @@ initial_activities = {
         "participants": ["william@mergington.edu", "jacob@mergington.edu"]
     },
     "Manga Maniacs": {
-        "description": "Explore the fantastic stories of the most interesting characters from Japanese Manga (graphic novels).",
+        "description": "Dive into the vibrant world of Japanese Manga! From samurai epics and supernatural adventures to heartwarming slice-of-life tales, discover iconic stories and unforgettable characters that have captivated millions worldwide. Whether you're a seasoned otaku or a curious newcomer, all are welcome!",
         "schedule": "Tuesdays, 7:00 PM",
         "schedule_details": {
             "days": ["Tuesday"],
