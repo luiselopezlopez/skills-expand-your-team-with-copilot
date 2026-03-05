@@ -166,13 +166,13 @@ initial_activities = {
     },
     "Manga Maniacs": {
         "description": "Dive into the vibrant world of Japanese Manga! From samurai epics and supernatural adventures to heartwarming slice-of-life tales, discover iconic stories and unforgettable characters that have captivated millions worldwide. Whether you're a seasoned otaku or a curious newcomer, all are welcome!",
-        "schedule": "Tuesdays, 7:00 PM",
+        "schedule": "Tuesdays, 5:00 PM",
         "schedule_details": {
             "days": ["Tuesday"],
-            "start_time": "19:00",
-            "end_time": "20:00"
+            "start_time": "17:00",
+            "end_time": "18:00"
         },
-        "max_participants": 15,
+        "max_participants": 25,
         "participants": []
     }
 }
