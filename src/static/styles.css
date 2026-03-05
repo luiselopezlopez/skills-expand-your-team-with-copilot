@@ -187,7 +187,9 @@ section h3 {
   margin-top: auto;
   padding-top: 10px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
 }
 
 /* Activity Tag */
@@ -659,6 +661,41 @@ footer {
   background-color: rgba(255, 255, 255, 0.2);
   font-size: 0.8rem;
   border-radius: 20px;
+}
+
+/* Share button */
+.share-button {
+  background: none;
+  color: var(--primary);
+  border: 1px solid var(--border);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.share-button:hover {
+  background-color: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+/* Highlight for a shared/linked activity */
+.highlight-shared {
+  outline: 3px solid var(--secondary);
+  box-shadow: 0 0 12px rgba(255, 111, 0, 0.35);
+  animation: highlight-pulse 1.5s ease-in-out 2;
+}
+
+@keyframes highlight-pulse {
+  0%   { box-shadow: 0 0 12px rgba(255, 111, 0, 0.35); }
+  50%  { box-shadow: 0 0 22px rgba(255, 111, 0, 0.7); }
+  100% { box-shadow: 0 0 12px rgba(255, 111, 0, 0.35); }
 }
 
 #logout-button:hover {
