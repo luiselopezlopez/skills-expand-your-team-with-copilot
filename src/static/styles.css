@@ -32,6 +32,36 @@
   --info-light: #d1ecf1;
 }
 
+/* Dark mode color overrides */
+body.dark-mode {
+  --primary: #5c6bc0;
+  --primary-light: #8e99f3;
+  --primary-dark: #26418f;
+  --primary-text: #ffffff;
+
+  --secondary: #ffa040;
+  --secondary-light: #ffd180;
+  --secondary-dark: #c67100;
+  --secondary-text: #ffffff;
+
+  --background: #121212;
+  --surface: #1e1e1e;
+  --text-primary: #e0e0e0;
+  --text-secondary: #aaaaaa;
+  --border: #333333;
+  --border-light: #2a2a2a;
+  --border-focus: #444444;
+
+  --success: #4caf50;
+  --success-light: #1b3a1c;
+  --warning: #ffb74d;
+  --warning-light: #3b2a00;
+  --error: #ef5350;
+  --error-light: #3b1212;
+  --info: #4fc3f7;
+  --info-light: #0a2a35;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -617,6 +647,9 @@ footer {
   position: absolute;
   top: 10px;
   right: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 #user-status {
@@ -663,4 +696,54 @@ footer {
 
 #logout-button:hover {
   background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Dark mode toggle button */
+#dark-mode-toggle {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  border: none;
+  color: white;
+  transition: background-color 0.2s;
+}
+
+#dark-mode-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Dark mode: fix activity tag colors */
+body.dark-mode .activity-tag {
+  background: #2c2f6b;
+  color: #9fa8da;
+}
+
+/* Dark mode: search input */
+body.dark-mode .search-box input {
+  background-color: var(--surface);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+/* Dark mode: modal */
+body.dark-mode .modal-content {
+  background-color: var(--surface);
+  color: var(--text-primary);
+}
+
+body.dark-mode .close-modal,
+body.dark-mode .close-login-modal {
+  color: var(--text-secondary);
+}
+
+/* Dark mode: form inputs */
+body.dark-mode input[type="text"],
+body.dark-mode input[type="email"],
+body.dark-mode input[type="password"] {
+  background-color: var(--border-light);
+  color: var(--text-primary);
+  border-color: var(--border);
 }
