@@ -363,6 +363,21 @@ document.addEventListener("DOMContentLoaded", () => {
     return "academic";
   }
 
+  // Function to build share URLs for an activity
+  function getShareUrls(name, details) {
+    const schedule = formatSchedule(details);
+    const pageUrl = window.location.href.split("?")[0];
+    const shareText = `Check out ${name} at Mergington High School!\n${details.description}\nSchedule: ${schedule}`;
+    const fullShareText = `${shareText}\n\nLearn more: ${pageUrl}`;
+
+    return {
+      text: fullShareText,
+      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(pageUrl)}`,
+      whatsapp: `https://wa.me/?text=${encodeURIComponent(fullShareText)}`,
+      email: `mailto:?subject=${encodeURIComponent("Check out " + name + " at Mergington High School!")}&body=${encodeURIComponent(fullShareText)}`,
+    };
+  }
+
   // Function to fetch activities from API with optional day and time filters
   async function fetchActivities() {
     // Show loading skeletons first
@@ -499,6 +514,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Format the schedule using the new helper function
     const formattedSchedule = formatSchedule(details);
 
+    // Build share URLs for this activity
+    const shareUrls = getShareUrls(name, details);
+
     // Create activity tag
     const tagHtml = `
       <span class="activity-tag" style="background-color: ${typeInfo.color}; color: ${typeInfo.textColor}">
@@ -569,12 +587,36 @@ document.addEventListener("DOMContentLoaded", () => {
         `
         }
       </div>
+      <div class="share-buttons">
+        <span class="share-label">Share:</span>
+        <a class="share-button share-twitter" href="${shareUrls.twitter}" target="_blank" rel="noopener noreferrer" title="Share on X (Twitter)" aria-label="Share on X (Twitter)">𝕏</a>
+        <a class="share-button share-whatsapp" href="${shareUrls.whatsapp}" target="_blank" rel="noopener noreferrer" title="Share on WhatsApp" aria-label="Share on WhatsApp">💬</a>
+        <a class="share-button share-email" href="${shareUrls.email}" title="Share via Email" aria-label="Share via Email">📧</a>
+        <button class="share-button share-copy" title="Copy activity info to clipboard" aria-label="Copy activity info to clipboard">📋</button>
+      </div>
     `;
 
     // Add click handlers for delete buttons
     const deleteButtons = activityCard.querySelectorAll(".delete-participant");
     deleteButtons.forEach((button) => {
       button.addEventListener("click", handleUnregister);
+    });
+
+    // Add click handler for copy share button
+    const copyButton = activityCard.querySelector(".share-copy");
+    copyButton.addEventListener("click", () => {
+      navigator.clipboard.writeText(shareUrls.text).then(() => {
+        copyButton.textContent = "✓";
+        copyButton.classList.add("copied");
+        copyButton.title = "Copied!";
+        setTimeout(() => {
+          copyButton.textContent = "📋";
+          copyButton.classList.remove("copied");
+          copyButton.title = "Copy activity info to clipboard";
+        }, 2000);
+      }).catch(() => {
+        showMessage("Failed to copy to clipboard. Please check your browser permissions.", "error");
+      });
     });
 
     // Add click handler for register button (only when authenticated)
